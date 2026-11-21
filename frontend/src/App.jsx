@@ -127,7 +127,7 @@ export default function App() {
             <button className="btn primary" disabled={!ready} onClick={run}>
               {busy ? 'Analysing...' : 'Detect fraud'}
             </button>
-            {busy && <p className="hint">Isolating the handwriting and comparing inks. This takes a few seconds.</p>}
+            {busy && <p className="hint">Isolating the handwriting and comparing inks. On free hosting this can take 15-30 seconds.</p>}
             {error && <p className="alert" role="alert">{error}</p>}
             <p className="hint privacy">Privacy: the cheque is analysed in memory and is not stored.</p>
           </section>
