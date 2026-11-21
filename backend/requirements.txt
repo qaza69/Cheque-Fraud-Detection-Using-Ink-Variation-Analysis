@@ -1,0 +1,11 @@
+# Runtime dependencies of the web API (Render). Versions are pinned to the ones the model
+# files were trained and tested with: the Random Forest is a pickle, so scikit-learn and
+# numpy must match.  PyTorch is NOT listed: the Random Forest model needs none, which keeps
+# the service small enough for Render's free plan.  To also serve the two neural models
+# (paid plan with >= 2 GB RAM) install requirements-torch.txt and set ENABLED_MODELS.
+fastapi==0.141.1
+uvicorn==0.52.4
+python-multipart==0.0.33
+numpy==2.4.4
+opencv-python-headless==5.0.0.93
+scikit-learn==1.8.0

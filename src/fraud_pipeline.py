@@ -24,7 +24,7 @@ import config
 from src.ink.extraction import (extract_ink, segment_units, DEFAULT_FIELDS,
                                 FIELD_LABELS)
 from src.ink.features import unit_features, unit_patch
-from src.ink.models import load_model, MODEL_LABELS
+from src.ink.registry import load_model, MODEL_LABELS
 from src.ink.pairs import cheque_score
 from src.ink.templates import TemplateLibrary
 

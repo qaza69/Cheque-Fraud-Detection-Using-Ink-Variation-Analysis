@@ -1,0 +1,26 @@
+# Render Blueprint: the API (backend/) as one web service.
+# Dashboard: New + > Blueprint > pick this repository. After the first deploy, set
+# FRONTEND_ORIGINS to your Vercel URL (see DEPLOYMENT.md).
+services:
+  - type: web
+    name: cheque-fraud-api
+    runtime: python
+    plan: free                      # 512 MB RAM: enough for the Random Forest model (about 270 MB in use)
+    region: singapore               # closest Render region to India
+    buildCommand: pip install --upgrade pip && pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.5
+      - key: ENABLED_MODELS          # classical = no PyTorch needed
+        value: classical
+      - key: MAX_CONCURRENT          # analyses running at once (RAM guard)
+        value: "1"
+      - key: MAX_UPLOAD_MB
+        value: "12"
+      - key: FRONTEND_ORIGINS        # comma-separated, e.g. https://your-app.vercel.app
+        sync: false                  # asked for in the dashboard, never stored in git
+      - key: CORS_ORIGIN_REGEX       # optional: allow Vercel preview URLs of your project
+        sync: false

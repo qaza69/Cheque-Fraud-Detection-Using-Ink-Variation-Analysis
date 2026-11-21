@@ -42,7 +42,7 @@ pip install -r requirements.txt
 python -m src.train          # templates, dataset, cross-validation, final models (~15-25 min on CPU)
 python make_samples.py       # optional: demo cheque pairs in data/samples/
 streamlit run app.py         # http://localhost:8501
-python -m pytest tests -v    # 17 tests
+python -m pytest tests -v    # 29 tests (17 pipeline + 12 API)
 python test_detection.py     # smoke test on the demo cheques
 ```
 
@@ -55,12 +55,30 @@ python test_detection.py     # smoke test on the demo cheques
 | `src/ink/features.py` | optical-density features and patches |
 | `src/ink/idrbt.py`, `dataset.py` | dataset metadata and the pen-labelled ink-unit dataset |
 | `src/ink/pairs.py` | within-cheque pairs and the cheque score |
-| `src/ink/models.py` | the three pen-difference models |
+| `src/ink/registry.py` | model registry, Random Forest model and loader (no PyTorch needed) |
+| `src/ink/models.py` | the two neural pen-difference models (PyTorch) |
 | `src/fraud_pipeline.py` | end-to-end `FraudDetector` |
 | `src/train.py`, `src/evaluate.py` | training and cross-validation |
 | `src/gradcam.py` | Grad-CAM explanations |
 | `app.py` | Streamlit interface |
+| `backend/` | FastAPI service (`main.py`) and the files it ships (`artifacts/`: templates, models) |
+| `frontend/` | React + Vite website |
+| `render.yaml` | Render blueprint for the API |
 | `make_samples.py`, `make_synthetic_genuine.py` | demo cheques and simulated single-pen cheques |
+
+## Web version (Render + Vercel)
+
+The same detector is available as a web service: a FastAPI backend (`backend/`, deployed on
+Render) and a React website (`frontend/`, deployed on Vercel). The API serves the Random Forest
+model without PyTorch, so it fits Render's free plan.
+
+```bash
+ENABLED_MODELS=classical uvicorn backend.main:app --port 8000     # API, docs at /docs
+cd frontend && npm install && npm run dev                          # website, http://localhost:5173
+```
+
+Endpoints: `GET /health`, `GET /api/models`, `GET /api/samples`, `POST /api/detect`.
+Step-by-step deployment: see [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Limitations
 
