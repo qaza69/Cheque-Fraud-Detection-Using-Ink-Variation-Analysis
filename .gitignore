@@ -1,0 +1,28 @@
+# python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# dataset and everything derived from it (rebuilt by `python -m src.train`)
+data/raw/
+data/templates/
+outputs/models/
+outputs/ink_dataset.npz
+outputs/sample_results/
+
+# logs, scratch work and local tooling
+*.log
+train_log.txt
+scratch/
+.claude/
+
+# office and editor files
+*.docx
+~$*
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+streamlit_log.txt
